@@ -33,7 +33,7 @@ include "conn.php";
                 echo "<td>" . $row["id"] . "</td>";
                 echo "<td>" . $row["grade"] . "</td>;";
                 echo "<td>";
-                echo "<button type='button'; onclick='toEditClass(" . $row["id"] . ")'>Edit</button>";
+                echo "<button type='button' onclick='toEditClass(" . $row["id"] . ")'>Edit</button>";
                 echo "<form action='delete_class.php' method='POST'>
                     <input type='hidden' name='id' value='" . $row["id"] ."'>
                     <button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this class?\")'>Delete</button>
@@ -76,7 +76,7 @@ include "conn.php";
                 echo "<td>" . $rowStudent["age"] . "</td>;";
                 echo "<td>" . $rowStudent["grade"] . "</td>;";
                 echo "<td>";
-                echo "<button type='button; onclick='toEditStudent(" . $rowStudent["id"] . ")'>Edit</button>";
+                echo "<button type='button' onclick='toEditStudent(" . $rowStudent["id"] . ")'>Edit</button>";
                 echo "<form action='delete_student.php' method='POST'>
                     <input type='hidden' name='id' value='" . $rowStudent["id"] ."'>
                     <button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this student?\")'>Delete</button>
