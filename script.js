@@ -4,3 +4,7 @@ function toNewClass() {
 function toHome() {
     window.location.href = "index.php";
 }
+
+function toEditClass(id) {
+    window.location.href = "edit_class.php?id=" + id;
+}
