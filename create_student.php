@@ -67,5 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } catch (mysqli_sql_exception $e) {
         echo "Error: " . $e->getMessage();
+    } finally {
+        mysqli_close($conn);
     }
 }
