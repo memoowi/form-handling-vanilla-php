@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 <body>
     <button type="button" onclick="toHome()">Home</button>
     <h1>Edit Student</h1>
-    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
         <label for="name">Name</label>
         <input type="text" name="name" id="name" value="<?php echo $_POST["name"] ?? $name ; ?>"> <br>
         <label for="age">Age</label>
@@ -54,6 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             }
             ?>
         </select> <br>
+        <label for="photo">Photo</label>
+        <input type="file" name="photo" id="photo" accept="image/*" > <br>
         <button type="submit">Update</button>
     </form>
 
@@ -88,7 +90,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST["name"];
         $age = $_POST["age"];
         $class = $_POST["class"];
-        $sql = "UPDATE students SET name = '$name', age = '$age', class_id = '$class' WHERE id = '$id'";
+        $photo = $_FILES["photo"];
+
+        $query = "SELECT photo FROM students WHERE id = '$id'";
+        if (empty($photo["name"])) {
+            $photo = mysqli_fetch_assoc($conn->query($query))["photo"];
+        } else {
+            $renamed_file = "uploads/" . uniqid() . "-" . time() . "." .  pathinfo($photo["name"], PATHINFO_EXTENSION);
+            // DELETE OLD PHOTO IF EXIST
+            $old_photo = mysqli_fetch_assoc($conn->query($query))["photo"];
+            if (file_exists($old_photo)) {
+                unlink($old_photo);
+            }
+            
+            // move the file
+            move_uploaded_file($photo["tmp_name"], $renamed_file);
+
+            $photo = $renamed_file;
+        }
+
+        $sql = "UPDATE students SET name = '$name', age = '$age', class_id = '$class', photo = '$photo' WHERE id = '$id'";
         $result = $conn->query($sql);
         if ($result) {
             header("Location: index.php");

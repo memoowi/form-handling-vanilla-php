@@ -13,7 +13,7 @@ include 'conn.php';
 <body>
     <button type="button" onclick="toHome()">Home</button>
     <h1>Add Student</h1>
-    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
         <label for="name">Name</label>
         <input type="text" name="name" id="name"> <br>
         <label for="age">Age</label>
@@ -31,6 +31,8 @@ include 'conn.php';
             }
             ?>
         </select> <br>
+        <label for="photo">Photo</label>
+        <input type="file" name="photo" id="photo" accept="image/*"> <br>
         <button type="submit">Add</button>
     </form>
 
@@ -45,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"] ?? "";
     $age = $_POST["age"] ?? "";
     $class = $_POST["class"] ?? "";
+    $photo = $_FILES["photo"] ?? null;
 
     if (empty($name) || empty($age) || empty($class)) {
         echo "<i style='color:red'>All fields are required</i>";
@@ -56,9 +59,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<i style='color:red'>Age must be a number</i>";
         exit();
     }
+    // validation for extension name
+    if (!in_array(pathinfo($photo["name"], PATHINFO_EXTENSION), ["jpg", "jpeg", "png", "gif"])) {
+        /// do some validation
+        echo "<i style='color:red'>Only jpg, jpeg, png, gif files are allowed</i>";
+        exit();
+    }
+
+    // validation on size maximum 5MB
+    if ($photo["size"] > 5120000) {
+        // do something
+        echo "<i style='color:red'>File size must be less than 5MB</i>";
+        exit();
+    }
+
+    $target_dir = "uploads/";
+    // $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+    // renamed file
+    $renamed_file = $target_dir . uniqid() . "-" . time() . "." . pathinfo($photo["name"], PATHINFO_EXTENSION);
 
     try {
-        $sql = "INSERT INTO students (name, age, class_id) VALUES ('$name', '$age', '$class')";
+        move_uploaded_file($photo["tmp_name"], $renamed_file);
+        $sql = "INSERT INTO students (name, age, class_id, photo) VALUES ('$name', '$age', '$class', '$renamed_file')";
         $result = $conn->query($sql);
 
         if ($result) {
