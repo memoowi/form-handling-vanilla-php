@@ -7,6 +7,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $id = $_POST["id"];
             $sql = "DELETE FROM students WHERE id = '$id'";
             $result = $conn->query($sql);
+            $old_photo = $result->fetch_assoc()["photo"];
+            if (file_exists($old_photo)) {
+                unlink($old_photo);
+            }
             if ($result) {
                 header("Location: index.php");
             }
