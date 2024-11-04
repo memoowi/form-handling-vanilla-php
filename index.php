@@ -31,13 +31,10 @@ include "conn.php";
                 echo "<tr>";
                 echo "<td>" . $i . "</td>";
                 echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["grade"] . "</td>;";
+                echo "<td>" . $row["grade"] . "</td>";
                 echo "<td>";
                 echo "<button type='button' onclick='toEditClass(" . $row["id"] . ")'>Edit</button>";
-                echo "<form action='delete_class.php' method='POST'>
-                    <input type='hidden' name='id' value='" . $row["id"] ."'>
-                    <button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this class?\")'>Delete</button>
-                 </form>";
+                echo "<form action='delete_class.php' method='POST'><input type='hidden' name='id' value='" . $row["id"] . "'><button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this class?\")'>Delete</button></form>";
                 echo "</td>";
                 echo "</tr>";
                 $i++;
@@ -53,7 +50,7 @@ include "conn.php";
     <br /><br />
 
     <h2>Students :</h2>
-    <button type="button">Add New Students</button>
+    <button type="button" onclick="toNewStudent()">Add New Students</button>
     <table border="1">
         <tr>
             <th>No.</th>
@@ -72,13 +69,13 @@ include "conn.php";
                 echo "<tr>";
                 echo "<td>" . $i . "</td>";
                 echo "<td>" . $rowStudent["id"] . "</td>";
-                echo "<td>" . $rowStudent["name"] . "</td>;";
-                echo "<td>" . $rowStudent["age"] . "</td>;";
-                echo "<td>" . $rowStudent["grade"] . "</td>;";
+                echo "<td>" . $rowStudent["name"] . "</td>";
+                echo "<td>" . $rowStudent["age"] . "</td>";
+                echo "<td>" . $rowStudent["grade"] . "</td>";
                 echo "<td>";
                 echo "<button type='button' onclick='toEditStudent(" . $rowStudent["id"] . ")'>Edit</button>";
                 echo "<form action='delete_student.php' method='POST'>
-                    <input type='hidden' name='id' value='" . $rowStudent["id"] ."'>
+                    <input type='hidden' name='id' value='" . $rowStudent["id"] . "'>
                     <button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this student?\")'>Delete</button>
                  </form>";
                 echo "</td>";
@@ -95,8 +92,9 @@ include "conn.php";
 
     <script src="script.js"></script>
 </body>
+
 </html>
 
 <?php
-    mysqli_close($conn);
+mysqli_close($conn);
 ?>

@@ -3,7 +3,7 @@ include "conn.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     try {
-        if(isset($_GET["id"])){
+        if (isset($_GET["id"])) {
             $id = $_GET["id"];
             $query = "SELECT * FROM class WHERE id = $id";
             $result = $conn->query($query);
@@ -32,13 +32,39 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <button type="button" onclick="toHome()">Home</button>
     <h1>Edit Class</h1>
     <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST">
-        <input type="hidden" name="id" value="<?php echo $_GET["id"] ?>">
+        <input type="hidden" name="id" value="<?php echo $_POST["id"] ?? $row["id"] ?>">
         <label for="grade">Grade :</label><br />
-        <input type="text" name="grade" id="grade" value="<?php echo $row["grade"] ?>"><br />
+        <input type="text" name="grade" id="grade" value="<?php echo $row["grade"] ?? ""  ?>"><br />
         <button type="submit">Update</button>
     </form>
 
     <script src="script.js"></script>
 </body>
+
 </html>
 
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        if (empty($_POST["grade"])) {
+            echo "<i style='color:red'>Grade cannot be empty</i>";
+            exit();
+        }
+
+        $id = $_POST["id"];
+        $grade = $_POST["grade"];
+        $query = "UPDATE class SET grade = '$grade' WHERE id = $id";
+        $result =  $conn->query($query);
+        if ($result) {
+            // echo "Class updated successfully";
+            header("Location: index.php");
+        }
+    } catch (mysqli_sql_exception $e) {
+        echo "An error has occured : " . $e->getMessage();
+    } finally {
+        mysqli_close($conn);
+    }
+}
+
+?>
