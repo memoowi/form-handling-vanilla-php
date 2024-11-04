@@ -55,6 +55,7 @@ include "conn.php";
         <tr>
             <th>No.</th>
             <th>ID</th>
+            <th>Photo</th>
             <th>Name</th>
             <th>Age</th>
             <th>Grade</th>
@@ -69,6 +70,7 @@ include "conn.php";
                 echo "<tr>";
                 echo "<td>" . $i . "</td>";
                 echo "<td>" . $rowStudent["id"] . "</td>";
+                echo "<td><img src='" . $rowStudent["photo"] . "' alt='". $rowStudent["name"] ."' /></td>";
                 echo "<td>" . $rowStudent["name"] . "</td>";
                 echo "<td>" . $rowStudent["age"] . "</td>";
                 echo "<td>" . $rowStudent["grade"] . "</td>";
