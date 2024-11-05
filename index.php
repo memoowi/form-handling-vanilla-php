@@ -1,5 +1,10 @@
 <?php
+session_start();
 include "conn.php";
+if (!isset($_SESSION["token"])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
