@@ -1,5 +1,24 @@
 <?php
-include 'conn.php';
+session_start();
+include "conn.php";
+include 'token_validation.php';
+if (!isset($_SESSION["token"])) {
+    header("Location: login.php");
+    exit();
+} else {
+    $token = $_SESSION["token"];
+    if (!validateToken($token)) {
+        session_destroy();
+        header("Location: login.php");
+        exit();
+    } else {
+        $is_admin = $_SESSION["is_admin"];
+        if (!$is_admin) {
+            header("Location: index.php");
+            exit();
+        }
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     try {

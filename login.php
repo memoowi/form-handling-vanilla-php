@@ -26,7 +26,6 @@ if (isset($_SESSION["token"])) {
     </form>
     <p>Don't have an account? <a href="register.php">Register</a></p>
 </body>
-
 </html>
 
 <?php
@@ -56,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->bind_param("iss", $user["id"], $token, $expiration);
 
                 if ($stmt->execute()) {
-                    $_SESSION["user_id"] = $user["id"];
+                    $_SESSION["is_admin"] = $user["is_admin"];
                     $_SESSION["token"] = $token;
                     header("Location: index.php");
                 }

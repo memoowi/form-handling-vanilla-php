@@ -30,13 +30,22 @@ if (!isset($_SESSION["token"])) {
     <h1>IDN Backpacker School</h1>
 
     <h2>Classes :</h2>
-    <button type="button" onclick="toNewClass()">Add New Class</button>
+    <?php
+    if ($_SESSION["is_admin"]) {
+        echo "<button type='button' onclick='toNewClass()'>Add New Class</button>";
+    }
+    ?>
+
     <table border="1">
         <tr>
             <th>No.</th>
             <th>ID</th>
             <th>Grade</th>
-            <th>Action</th>
+            <?php
+            if ($_SESSION["is_admin"]) {
+                echo "<th>Action</th>";
+            }
+            ?>
         </tr>
         <?php
         $query = "SELECT * FROM class";
@@ -48,10 +57,12 @@ if (!isset($_SESSION["token"])) {
                 echo "<td>" . $i . "</td>";
                 echo "<td>" . $row["id"] . "</td>";
                 echo "<td>" . $row["grade"] . "</td>";
-                echo "<td>";
-                echo "<button type='button' onclick='toEditClass(" . $row["id"] . ")'>Edit</button>";
-                echo "<form action='delete_class.php' method='POST'><input type='hidden' name='id' value='" . $row["id"] . "'><button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this class?\")'>Delete</button></form>";
-                echo "</td>";
+                if ($_SESSION["is_admin"]) {
+                    echo "<td>";
+                    echo "<button type='button' onclick='toEditClass(" . $row["id"] . ")'>Edit</button>";
+                    echo "<form action='delete_class.php' method='POST'><input type='hidden' name='id' value='" . $row["id"] . "'><button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this class?\")'>Delete</button></form>";
+                    echo "</td>";
+                }
                 echo "</tr>";
                 $i++;
             }
@@ -66,7 +77,12 @@ if (!isset($_SESSION["token"])) {
     <br /><br />
 
     <h2>Students :</h2>
-    <button type="button" onclick="toNewStudent()">Add New Students</button>
+    <?php
+    if ($_SESSION["is_admin"]) {
+        echo "<button type='button' onclick='toNewStudent()'>Add New Students</button>";
+    }
+    ?>
+
     <table border="1">
         <tr>
             <th>No.</th>
@@ -75,7 +91,11 @@ if (!isset($_SESSION["token"])) {
             <th>Name</th>
             <th>Age</th>
             <th>Grade</th>
-            <th>Action</th>
+            <?php
+            if ($_SESSION["is_admin"]) {
+                echo "<th>Action</th>";
+            }
+            ?>
         </tr>
         <?php
         $queryStudent = "SELECT * FROM class JOIN students ON students.class_id = class.id";
@@ -86,17 +106,19 @@ if (!isset($_SESSION["token"])) {
                 echo "<tr>";
                 echo "<td>" . $i . "</td>";
                 echo "<td>" . $rowStudent["id"] . "</td>";
-                echo "<td><img src='" . $rowStudent["photo"] . "' alt='". $rowStudent["name"] ."' width='100px' /></td>";
+                echo "<td><img src='" . $rowStudent["photo"] . "' alt='" . $rowStudent["name"] . "' width='100px' /></td>";
                 echo "<td>" . $rowStudent["name"] . "</td>";
                 echo "<td>" . $rowStudent["age"] . "</td>";
                 echo "<td>" . $rowStudent["grade"] . "</td>";
-                echo "<td>";
-                echo "<button type='button' onclick='toEditStudent(" . $rowStudent["id"] . ")'>Edit</button>";
-                echo "<form action='delete_student.php' method='POST'>
+                if ($_SESSION["is_admin"]) {
+                    echo "<td>";
+                    echo "<button type='button' onclick='toEditStudent(" . $rowStudent["id"] . ")'>Edit</button>";
+                    echo "<form action='delete_student.php' method='POST'>
                     <input type='hidden' name='id' value='" . $rowStudent["id"] . "'>
                     <button type='submit' name='delete' value='delete' onclick='return confirm(\"Are you sure to delete this student?\")'>Delete</button>
                  </form>";
-                echo "</td>";
+                    echo "</td>";
+                }
                 echo "</tr>";
                 $i++;
             }
