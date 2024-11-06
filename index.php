@@ -1,9 +1,17 @@
 <?php
 session_start();
 include "conn.php";
+include 'token_validation.php';
 if (!isset($_SESSION["token"])) {
     header("Location: login.php");
     exit();
+} else {
+    $token = $_SESSION["token"];
+    if (!validateToken($token)) {
+        session_destroy();
+        header("Location: login.php");
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>

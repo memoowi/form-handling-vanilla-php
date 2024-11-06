@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if($stmt->execute()) {
             $userId = $stmt->insert_id;
             $token = bin2hex(random_bytes(32));
-            $expiration = time() + 3600; // 1 jam
+            $expiration = date("Y-m-d H:i:s", time() + 3600); // 1 jam
 
             $stmt = $conn->prepare("INSERT INTO tokens (user_id, token, expiration) VALUES (?, ?, ?)");
             $stmt->bind_param("iss", $userId, $token, $expiration);
