@@ -24,6 +24,9 @@ if (!isset($_SESSION["token"])) {
 </head>
 
 <body>
+    <form action="logout.php" method="POST">
+        <input type="submit" name="logout" value="Logout" onclick="return confirm('Are you sure to Logout?')" />
+    </form>
     <h1>IDN Backpacker School</h1>
 
     <h2>Classes :</h2>
